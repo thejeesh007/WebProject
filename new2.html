@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+        }
+
+        .container {
+            border: 1px solid #eee;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background: #608BC1;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .close-btn {
+            font-size: 24px;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        .search-container {
+            flex: 1;
+            margin: 0 1rem;
+            position: relative;
+        }
+
+        .search-container::before {
+            content: "🔍";
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: none;
+            border-radius: 999px;
+            font-size: 0.9rem;
+        }
+
+        .profile-btn {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-content {
+            padding: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .bank-card {
+            background: #4A628A;
+            padding: 1.5rem;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            color: white;
+        }
+
+        .bank-amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .bank-name {
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .transactions {
+            margin-bottom: 2rem;
+        }
+
+        .transaction-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .avatar {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 1rem;
+        }
+
+        .avatar.red { background: #133E87; }
+        .avatar.green { background: #000B58; }
+
+        .footer {
+            border-top: 1px solid #eee;
+            padding: 1.5rem;
+        }
+
+        .footer-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            color: #666;
+            text-decoration: none;
+        }
+        .profile-dropdown {
+            position: absolute;
+            top: 3.5rem;
+            right: 1rem;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 150px;
+            padding: 0.5rem 0;
+        }
+        .profile-dropdown ul {
+            list-style: none;
+        }
+        .profile-dropdown li {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+        }
+        .profile-dropdown li:hover {
+            background: #f5f5f5;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const profileBtn = document.querySelector(".profile-btn");
+        const profileDropdown = document.querySelector(".profile-dropdown");
+
+        profileBtn.addEventListener("click", function (event) {
+            event.stopPropagation();
+            profileDropdown.classList.toggle("hidden");
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!profileBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
+                profileDropdown.classList.add("hidden");
+            }
+        });
+    });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button class="close-btn">×</button>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="search for any Contacts">
+            </div>
+            <button class="profile-btn">👤</button>
+        </div>
+        <div class="profile-dropdown hidden">
+            <ul>
+                <li><a href="#">View Profile</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </div>  
+        <div class="main-content">
+            <h2 class="section-title">Bank Balance</h2>
+            
+            <div class="bank-card">
+                <div>
+                    <div class="bank-amount">$2194.09</div>
+                    <div class="bank-name">Bank of America</div>
+                </div>
+                <div>💰</div>
+            </div>
+
+            <h2 class="section-title">Previous Transactions</h2>
+            
+            <div class="transactions">
+                <div class="transaction-item">
+                    <div class="avatar red">S</div>
+                    <div>Transfered $210 to Sowmiya</div>
+                </div>
+                <div class="transaction-item">
+                    <div class="avatar green">R</div>
+                    <div>Received $1100 from Rajesh</div>
+                </div>
+                <div class="transaction-item">
+                    <div class="avatar red">N</div>
+                    <div>Transfered $210 to Natarajan</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-section">
+                <h3 class="footer-title">Banks</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Axis</a></li>
+                    <li><a href="#">State Bank</a></li>
+                    <li><a href="#">HDFC Bank</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3 class="footer-title">Company</h3>
+                <ul class="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3 class="footer-title">Socials</h3>
+                <div class="social-links">
+                    <a href="#">Facebook</a>
+                    <a href="#">Instagram</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

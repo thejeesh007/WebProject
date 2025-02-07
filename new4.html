@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacts Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+        }
+
+        .container {
+            border: 1px solid #eee;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background: #A5BFCC;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .close-btn {
+            font-size: 24px;
+            background: none;
+            border: none;
+            color: black;
+            cursor: pointer;
+        }
+
+        .search-container {
+            flex: 1;
+            margin: 0 1rem;
+            position: relative;
+        }
+
+        .search-container::before {
+            content: "🔍";
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: none;
+            border-radius: 999px;
+            font-size: 0.9rem;
+        }
+
+        .profile-btn {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .section-title {
+            padding: 1rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .contact-list {
+            padding: 0 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .contact-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 500;
+            margin-right: 1rem;
+        }
+
+        .avatar-t { background: #86A788; }
+        .avatar-d { background: #DF6D2D; }
+        .avatar-n { background: #8D77AB; }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-name {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .contact-number {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .contacts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            padding: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .grid-contact {
+            text-align: center;
+        }
+
+        .links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1rem;
+            padding: 1rem 0;
+            border-top: 1px solid #eee;
+        }
+
+        .links a {
+            color: #FF5722;
+            text-decoration: none;
+        }
+
+        .footer {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            padding: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .footer-section h3 {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .profile-dropdown {
+            position: absolute;
+            top: 3.5rem;
+            right: 1rem;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 150px;
+            padding: 0.5rem 0;
+        }
+        .profile-dropdown ul {
+            list-style: none;
+        }
+        .profile-dropdown li {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+        }
+        .profile-dropdown li:hover {
+            background: #f5f5f5;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const profileBtn = document.querySelector(".profile-btn");
+        const profileDropdown = document.querySelector(".profile-dropdown");
+
+        profileBtn.addEventListener("click", function (event) {
+            event.stopPropagation();
+            profileDropdown.classList.toggle("hidden");
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!profileBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
+                profileDropdown.classList.add("hidden");
+            }
+        });
+    });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button class="close-btn">×</button>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="search for Contacts">
+            </div>
+            <button class="profile-btn">👤</button>
+        </div>
+        <div class="profile-dropdown hidden">
+            <ul>
+                <li><a href="#">View Profile</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </div>
+        <div class="section-title">Frequently Transferred</div>
+        <div class="contact-list">
+            <div class="contact-item">
+                <div class="contact-avatar avatar-t">T</div>
+                <div class="contact-info">
+                    <div class="contact-name">Thejeesh</div>
+                    <div class="contact-number">+91XXXXXXXX39</div>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="contact-avatar avatar-d">D</div>
+                <div class="contact-info">
+                    <div class="contact-name">Dharani</div>
+                    <div class="contact-number">+91XXXXXXXX87</div>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="contact-avatar avatar-n">N</div>
+                <div class="contact-info">
+                    <div class="contact-name">Naveen</div>
+                    <div class="contact-number">+91XXXXXXXX49</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">Contacts</div>
+        <div class="contacts-grid">
+            <div class="grid-contact">
+                <div class="contact-avatar avatar-t">T</div>
+                <div class="contact-name">Thanish</div>
+                <div class="contact-number">+91XXXXXXXX56</div>
+            </div>
+            <div class="grid-contact">
+                <div class="contact-avatar avatar-t">T</div>
+                <div class="contact-name">Thangarasu</div>
+                <div class="contact-number">+91XXXXXXXX67</div>
+            </div>
+            <div class="grid-contact">
+                <div class="contact-avatar avatar-t">T</div>
+                <div class="contact-name">Thevenin</div>
+                <div class="contact-number">+91XXXXXXXX34</div>
+            </div>
+            <div class="grid-contact">
+                <div class="contact-avatar avatar-d">D</div>
+                <div class="contact-name">Dharani</div>
+                <div class="contact-number">+91XXXXXXXX87</div>
+            </div>
+            <div class="grid-contact">
+                <div class="contact-avatar avatar-d">D</div>
+                <div class="contact-name">Dinesh</div>
+                <div class="contact-number">+91XXXXXXXX09</div>
+            </div>
+            <div class="grid-contact">
+                <div class="contact-avatar avatar-d">D</div>
+                <div class="contact-name">Dharmesh</div>
+                <div class="contact-number">+91XXXXXXXX90</div>
+            </div>
+            <div class="grid-contact">
+                <div class="contact-avatar avatar-n">N</div>
+                <div class="contact-name">Naveen</div>
+                <div class="contact-number">+91XXXXXXXX49</div>
+            </div>
+            <div class="grid-contact">
+                <div class="contact-avatar avatar-n">N</div>
+                <div class="contact-name">Nimishi</div>
+                <div class="contact-number">+91XXXXXXXX78</div>
+            </div>
+            <div class="grid-contact">
+                <div class="contact-avatar avatar-n">N</div>
+                <div class="contact-name">Nosta</div>
+                <div class="contact-number">+91XXXXXXXX11</div>
+            </div>
+        </div>
+
+        <div class="links">
+            <a href="#">Help</a>
+            <a href="#">Privacy</a>
+        </div>
+
+        <div class="footer">
+            <div class="footer-section">
+                <h3>Help</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Payment</a></li>
+                    <li><a href="#">Cancellation</a></li>
+                    <li><a href="#">History</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Phone No</h3>
+                <ul class="footer-links">
+                    <li><a href="#">079-12345</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Company</h3>
+                <ul class="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Socials</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><span>Facebook</span></a></li>
+                    <li><a href="#"><span>Instagram</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

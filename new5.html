@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expenses Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            max-width: 480px;
+            margin: 0 auto;
+            background: white;
+        }
+
+        .container {
+            border: 1px solid #eee;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background: #BAD8B6;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .close-btn {
+            font-size: 24px;
+            background: none;
+            border: none;
+            color: black;
+            cursor: pointer;
+        }
+
+        .search-container {
+            flex: 1;
+            margin: 0 1rem;
+            position: relative;
+        }
+
+        .search-container::before {
+            content: "🔍";
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: none;
+            border-radius: 999px;
+            font-size: 0.9rem;
+        }
+
+        .profile-btn {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .expenses-header {
+            padding: 2rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .expenses-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .expenses-subtitle {
+            margin-top: 0.5rem;
+        }
+
+        .less {
+            color: #666;
+        }
+
+        .more {
+            color: #22ff2d;
+        }
+
+        .monthly-question {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .donut-chart-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 2rem auto;
+        }
+
+        .donut-chart {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(
+                #5D8736 0% 40%,
+                #56dc26 40% 60%,
+                #138b5b 60% 83%,
+                #46c862 83% 100%
+            );
+            transform: rotate(-90deg);
+        }
+
+        .donut-hole {
+            position: absolute;
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .expense-labels {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .expense-label {
+            position: absolute;
+            text-align: center;
+            width: 120px;
+        }
+
+        .expense-label.foods {
+            top: 85%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .expense-label.stationaries {
+            top: 40%;
+            right: -20px;
+        }
+
+        .expense-label.clothes {
+            top: 40%;
+            left: -20px;
+        }
+
+        .expense-label.medicine {
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .percentage {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .footer {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            padding: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .footer-section h3 {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .profile-dropdown {
+            position: absolute;
+            top: 3.5rem;
+            right: 1rem;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 150px;
+            padding: 0.5rem 0;
+        }
+        .profile-dropdown ul {
+            list-style: none;
+        }
+        .profile-dropdown li {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+        }
+        .profile-dropdown li:hover {
+            background: #f5f5f5;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const profileBtn = document.querySelector(".profile-btn");
+        const profileDropdown = document.querySelector(".profile-dropdown");
+
+        profileBtn.addEventListener("click", function (event) {
+            event.stopPropagation();
+            profileDropdown.classList.toggle("hidden");
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!profileBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
+                profileDropdown.classList.add("hidden");
+            }
+        });
+    });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button class="close-btn">×</button>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="search for Detailed Expenses">
+            </div>
+            <button class="profile-btn">👤</button>
+        </div>
+        <div class="profile-dropdown hidden">
+            <ul>
+                <li><a href="#">View Profile</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </div>
+        <div class="expenses-header">
+            <div>
+                <h1 class="expenses-title">Expenses</h1>
+                <p class="expenses-subtitle">
+                    Spend <span class="less">Less</span> Save <span class="more">More!</span>
+                </p>
+            </div>
+            <div class="monthly-question">
+                Need for every month?
+            </div>
+        </div>
+
+        <div class="donut-chart-container">
+            <div class="donut-chart"></div>
+            <div class="donut-hole"></div>
+            <div class="expense-labels">
+                <div class="expense-label foods">
+                    <div class="percentage">40%</div>
+                    <div>Foods and Beverages</div>
+                </div>
+                <div class="expense-label stationaries">
+                    <div class="percentage">20%</div>
+                    <div>Stationaries and Books</div>
+                </div>
+                <div class="expense-label clothes">
+                    <div class="percentage">23%</div>
+                    <div>Clothes</div>
+                </div>
+                <div class="expense-label medicine">
+                    <div class="percentage">17%</div>
+                    <div>Medicine</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-section">
+                <h3>Help</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Payment</a></li>
+                    <li><a href="#">Cancellation</a></li>
+                    <li><a href="#">History</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Phone No</h3>
+                <ul class="footer-links">
+                    <li><a href="#">079-12345</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Company</h3>
+                <ul class="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Socials</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><span>Facebook</span></a></li>
+                    <li><a href="#"><span>Instagram</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: white;
+            padding: 1rem;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .close-btn {
+            font-size: 24px;
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .search-container {
+            flex: 1;
+            margin: 0 1rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e2e2;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #ccc;
+        }
+
+        .profile-btn {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: #4A90E2;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+        }
+
+        .toggle-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .toggle-btn {
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 999px;
+            background: #E9967A;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-btn.active {
+            background: #FF5722;
+        }
+
+        .amount-display {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .amount {
+            color: #FF5722;
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .year {
+            color: #666;
+            font-size: 1.25rem;
+        }
+
+        .chart-container {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 20rem;
+            padding: 0 1rem;
+        }
+
+        .bar-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .bar {
+            width: 4rem;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            background: #999;
+        }
+
+        .bar.current {
+            background: #FF5722;
+        }
+
+        .bar-label {
+            color: #666;
+        }
+        .profile-dropdown {
+            position: absolute;
+            top: 3.5rem;
+            right: 1rem;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 150px;
+            padding: 0.5rem 0;
+        }
+        .profile-dropdown ul {
+            list-style: none;
+        }
+        .profile-dropdown li {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+        }
+        .profile-dropdown li:hover {
+            background: #f5f5f5;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggleButtons = document.querySelectorAll(".toggle-btn");
+    
+            toggleButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    toggleButtons.forEach(btn => btn.classList.remove("active"));
+                    this.classList.add("active");
+    
+                    const amountDisplay = document.querySelector(".amount");
+                    if (this.textContent === "Monthly") {
+                        amountDisplay.textContent = "$1680.50";
+                    } else if (this.textContent === "Yearly") {
+                        amountDisplay.textContent = "$20180.67";
+                    } else if (this.textContent === "Daily") {
+                        amountDisplay.textContent = "$56.02";
+                    }
+                });
+            });
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+        const toggleButtons = document.querySelectorAll(".toggle-btn");
+        const barGroups = document.querySelectorAll(".bar-group");
+        const amountDisplay = document.querySelector(".amount");
+        const yearDisplay = document.querySelector(".year");
+
+        const yearlyData = {
+            2019: "$10,500.25",
+            2020: "$13,200.80",
+            2021: "$12,750.40",
+            2022: "$9,600.10",
+            2023: "$15,900.55",
+            2024: "$20,180.67"
+        };
+
+        toggleButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                toggleButtons.forEach(btn => btn.classList.remove("active"));
+                this.classList.add("active");
+
+                if (this.textContent === "Monthly") {
+                    amountDisplay.textContent = "$1680.50";
+                } else if (this.textContent === "Yearly") {
+                    amountDisplay.textContent = "$20180.67";
+                } else if (this.textContent === "Daily") {
+                    amountDisplay.textContent = "$56.02";
+                }
+            });
+        });
+
+        barGroups.forEach(barGroup => {
+            barGroup.addEventListener("click", function () {
+                barGroups.forEach(group => group.querySelector(".bar").classList.remove("current"));
+                this.querySelector(".bar").classList.add("current");
+
+                const selectedYear = this.querySelector(".bar-label").textContent;
+                yearDisplay.textContent = selectedYear;
+                amountDisplay.textContent = yearlyData[selectedYear] || "$0.00";
+            });
+        });
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+        const profileBtn = document.querySelector(".profile-btn");
+        const profileDropdown = document.querySelector(".profile-dropdown");
+
+        profileBtn.addEventListener("click", function (event) {
+            event.stopPropagation();
+            profileDropdown.classList.toggle("hidden");
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!profileBtn.contains(event.target) && !profileDropdown.contains(event.target)) {
+                profileDropdown.classList.add("hidden");
+            }
+        });
+    });
+</script>
+
+    </script>
+    
+    <div class="header">
+        <button class="close-btn">×</button>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="search for Contacts">
+        </div>
+        <button class="profile-btn">👤</button>
+    </div>
+    <div class="profile-dropdown hidden">
+        <ul>
+            <li><a href="#">View Profile</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Logout</a></li>
+        </ul>
+    </div>    
+    <div class="toggle-container">
+        <button class="toggle-btn">Monthly</button>
+        <button class="toggle-btn active">Yearly</button>
+        <button class="toggle-btn">Daily</button>
+    </div>
+
+    <div class="amount-display">
+        <div class="amount">$20180.67</div>
+        <div class="year">2024</div>
+    </div>
+
+    <div class="chart-container">
+        <div class="bar-group">
+            <div class="bar" style="height: 30%"></div>
+            <span class="bar-label">2019</span>
+        </div>
+        <div class="bar-group">
+            <div class="bar" style="height: 45%"></div>
+            <span class="bar-label">2020</span>
+        </div>
+        <div class="bar-group">
+            <div class="bar" style="height: 35%"></div>
+            <span class="bar-label">2021</span>
+        </div>
+        <div class="bar-group">
+            <div class="bar" style="height: 25%"></div>
+            <span class="bar-label">2022</span>
+        </div>
+        <div class="bar-group">
+            <div class="bar" style="height: 60%"></div>
+            <span class="bar-label">2023</span>
+        </div>
+        <div class="bar-group">
+            <div class="bar current" style="height: 100%"></div>
+            <span class="bar-label">2024</span>
+        </div>
+    </div>
+</body>
+</html>
